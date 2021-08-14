@@ -9,13 +9,15 @@ import pandas as pd
 import re
 
 data=pd.read_csv('result_data.csv',encoding='gbk')
+
+data['task_answers'] = data.task_answers.astype(str)
+
 #计算时间
 data['sum_time'] = pd.to_datetime(data['stop_time']) - pd.to_datetime(data['start_time'])
 #区分两个课程
 data_junior=data[data['school'].isin(['区二中实验初中'])]
 data_senior=data[data['school'].isin(['南溪一中（高中）'])]
 
-data['task_answers'] = data.task_answers.astype(str)
 canvas1=[]
 canvas2=[]
 canvas3=[]
@@ -35,47 +37,11 @@ basic11=[]
 basic12=[]
 basic13=[]
 sketch=[]
-'''
-#找到对应的canvas、basic以及sketch  
-str_canvas=re.findall(r'canvas.*?]}',data['task_answers'][103])
-str_basic=re.findall(r'basic.*?"]',data['task_answers'][0])
-str_sketch=re.findall(r'https.*?.png',data['task_answers'][0])
-#print(str_canvas[0])
-#print(str_basic[4])
-#print(str_sketch)
-
-
-
-#canvas处理,canvas就是4个（空的计数要-1）
-#for i in range(len(str_canvas)):
-#    str_canvas[i]=str_canvas[i].strip('canvas\":{\\"input":[],\\"deck\\":}",')
-#    #str_canvas[i]=str_canvas[i].strip('],\\"deck\\":}",')
-#    if len(str_canvas[i])<1:
-#        str_canvas[i]='\\'
-#print(str_canvas[4])    #要把每一个的输入新数组
-    
-#bacis处理
-#print(str_basic[1])
-for i in range(len(str_basic)):
-    #str_basic[i]=re.sub(r'basic.*?":\[','',str_basic[i])
-    str_basic[i]=str_basic[i].strip(r'basic\":[]')
-    #str_basic[i]=re.sub(r'\],\\"deck.*?}",','',str_basic[i])
-    str_basic[i]=re.sub(r'deck.*?}",','',str_basic[i])
-    
-    #str_basic[i]=re.sub(r'\\"','',str_basic[i])
-    #str_basic[i]=re.split(r'\",', str_basic[i])
-    str_basic[i]=str_basic[i].split('\",')
-    for k in range(len(str_basic[i])):
-        str_basic[i][k]=str_basic[i][k].strip(r'\"')        
-    if len(str_basic[i])<1:
-        str_basic[i]='\\'
-#print(str_basic[2][1])#必须取奇数 0——1 3 1——1 3 5 7 2——'''
-
 
 for i in range(len(data['task_answers'])):
-    str_canvas=re.findall(r'canvas.*?]}',data['task_answers'][i])
-    str_basic=re.findall(r'basic.*?"]',data['task_answers'][i])
-    str_sketch=re.findall(r'https.*?.png',data['task_answers'][i])
+    str_canvas=re.findall(r'canvas.*?]}',data['task_answers'].iloc[i])
+    str_basic=re.findall(r'basic.*?"]',data['task_answers'].iloc[i])
+    str_sketch=re.findall(r'https.*?.png',data['task_answers'].iloc[i])
     for j in range(len(str_canvas)):
         #str_canvas[j]=str_canvas[j].strip('canvas\":{\\"input":[')
         #str_canvas[j]=str_canvas[j].strip('],\\"deck\\":}",')
@@ -93,7 +59,6 @@ for i in range(len(data['task_answers'])):
             str_basic[k][m]=str_basic[k][m].strip(r'\"')        
         if len(str_basic[k])<1:
             str_basic[i]='\\'
-        
         
     if len(str_canvas)>=1:
         canvas1.append(str_canvas[0])
@@ -138,18 +103,17 @@ for i in range(len(data['task_answers'])):
         basic12.append(' ')
         basic13.append(' ')
    
-    
-    #basic3.append(str_basic[1][1])
-    #basic4.append(str_basic[1][3])
-    #basic5.append(str_basic[1][5])
-    #basic6.append(str_basic[1][7])
-    #basic7.append(str_basic[2][1])
-    #basic8.append(str_basic[3][1])
-    #basic9.append(str_basic[4][1])
-    #basic10.append(str_basic[4][3])
-    #basic11.append(str_basic[4][5])
-    #basic12.append(str_basic[4][7])
-    #basic13.append(str_basic[4][9])
+    basic3.append(str_basic[1][1])
+    basic4.append(str_basic[1][3])
+    basic5.append(str_basic[1][5])
+    basic6.append(str_basic[1][7])
+    basic7.append(str_basic[2][1])
+    basic8.append(str_basic[3][1])
+    basic9.append(str_basic[4][1])
+    basic10.append(str_basic[4][3])
+    basic11.append(str_basic[4][5])
+    basic12.append(str_basic[4][7])
+    basic13.append(str_basic[4][9])
 sketch[10]=['https://cdn.open-ct.com/task-resources/%E8%91%A3%E6%99%93%E8%88%92/222.png']
 #print(sketch)
 
